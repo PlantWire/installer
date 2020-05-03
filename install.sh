@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "HelloWorld"
+mkdir -p /root/itWorks
