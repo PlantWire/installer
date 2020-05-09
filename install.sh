@@ -65,7 +65,7 @@ else
         php composer-setup.php --filename=composer --install-dir=/usr/bin
         php -r "unlink('composer-setup.php');"
         # Install Caddy
-        apt install gcc g++
+        apt -y install gcc g++
         mkdir -p /etc/pwire/caddy
         mkdir -p /etc/pwire/caddy/lib
         mkdir -p $HOME/go
