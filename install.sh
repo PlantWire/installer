@@ -119,8 +119,8 @@ else
         chown -R www-data:www-data /etc/pwire/frontend
         (crontab -u caddy -l 2>/dev/null; echo "* * * * * cd /etc/pwire/frontend && php artisan schedule:run >> /dev/null 2>&1") | crontab -
         # Cleanup
-        apt remove gcc g++
-        apt autoremove
+        apt -y remove gcc g++
+        apt -y autoremove
     else
         apt update
         # Uninstall Server
