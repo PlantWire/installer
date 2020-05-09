@@ -1,0 +1,21 @@
+# This service file requires the following:
+#
+# pWire application setup and running under /etc/pwire/frontend
+
+[Unit]
+Description=pWire-Eventing
+Documentation=https://gitlab.dev.ifs.hsr.ch/epj/2020/pwire/pwire-frontend
+Requires=pwire-frontend.service
+After=network.target pwire-frontend.service
+[Service]
+User=caddy
+Group=caddy
+ExecStart=/usr/bin/laravel-echo-server start --dir=/etc/pwire/frontend
+TimeoutStopSec=5s
+LimitNOFILE=1048576
+LimitNPROC=512
+PrivateTmp=true
+ProtectSystem=full
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+[Install]
+WantedBy=multi-user.target
