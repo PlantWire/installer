@@ -65,33 +65,11 @@ else
         php composer-setup.php --filename=composer --install-dir=/usr/bin
         php -r "unlink('composer-setup.php');"
         # Install Caddy
-        apt -y install gcc g++
-        mkdir -p /etc/pwire/caddy
-        mkdir -p /etc/pwire/caddy/lib
-        mkdir -p $HOME/go
-        mkdir -p $HOME/golang
-        groupadd --system caddy
-        useradd --system --gid caddy --create-home --home-dir /etc/pwire/caddy/lib --shell /usr/sbin/nologin --comment "Caddy web server" caddy
-        usermod -aG www-data caddy
-        wget https://dl.google.com/go/go1.14.1.linux-armv6l.tar.gz
-        tar -C $HOME/golang -xzf go1.14.1.linux-armv6l.tar.gz
-        rm go1.14.1.linux-armv6l.tar.gz
-        git clone "https://github.com/caddyserver/caddy.git"
-        cd caddy/cmd/caddy
-        git checkout v2.0.0-beta.20
-        export GOPATH=$HOME/go
-        export GO111MODULE=on
-        $HOME/golang/go/bin/go build
-        cp caddy /etc/pwire/caddy
-        cd ../../../
-        rm -r $HOME/golang
-        rm -r $HOME/go
-        rm -r caddy
-        cp Caddyfile /etc/pwire/caddy
-        chown -R caddy:caddy /etc/pwire/caddy
-        cp pwire-caddy.service /etc/systemd/system/pwire-caddy.service
-        systemctl daemon-reload
-        systemctl enable pwire-caddy
+	echo "deb [trusted=yes] https://apt.fury.io/caddy/ /" | tee -a /etc/apt/sources.list.d/caddy-fury.list
+	sudo apt update
+	sudo apt install caddy
+	cp Caddyfile /etc/caddy/Caddyfile
+        #usermod -aG www-data caddy
         # Install Postgre
         apt install -y postgresql
 	    sudo -i -u postgres bash -c "psql --command=\"CREATE USER pwire WITH PASSWORD 'pwire' NOCREATEDB;\""
@@ -118,9 +96,6 @@ else
         systemctl daemon-reload
         chown -R www-data:www-data /etc/pwire/frontend
         (crontab -u caddy -l 2>/dev/null; echo "* * * * * cd /etc/pwire/frontend && php artisan schedule:run >> /dev/null 2>&1") | crontab -
-        # Cleanup
-        apt -y remove gcc g++
-        apt -y autoremove
     else
         apt update
         # Uninstall Server
@@ -150,12 +125,9 @@ else
         rm /etc/systemd/system/pwire-frontend.service
         rm /etc/systemd/system/pwire-eventing.service
         # Uninstall Caddy
-        systemctl stop pwire-caddy
-        systemctl stop pwire-caddy
-        rm /etc/systemd/system/pwire-caddy.service
-        systemctl daemon-reload
-        userdel caddy
-        groupdel caddy
+        systemctl stop caddy
+        apt purge caddy
+	rm /etc/apt/sources.list.d/caddy-fury.list
         # Uninstall Postgres
         apt purge postgresql
     fi
