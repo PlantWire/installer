@@ -106,9 +106,9 @@ else
         rm /etc/systemd/system/pwire-server.service
         systemctl daemon-reload
         # Uninstall PHP
-        apt -y purge php7.4-{bcmath,json,mbstring,xml,common,pgsql,redis}
-        apt -y purge php7.4-fpm
-        apt -y purge php7.4
+        apt -y purge php7.3-{bcmath,json,mbstring,xml,common,pgsql,redis}
+        apt -y purge php7.3-fpm
+        apt -y purge php7.3
         # Uninstall nodejs
         apt -y purge nodejs
         rm /etc/apt/sources.list.d/nodesource.list
