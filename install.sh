@@ -126,9 +126,9 @@ else
         rm /etc/systemd/system/pwire-eventing.service
         # Uninstall Caddy
         systemctl stop caddy
-        apt purge caddy
+        apt -y purge caddy
 	rm /etc/apt/sources.list.d/caddy-fury.list
         # Uninstall Postgres
-        apt purge postgresql
+        apt -y purge postgresql
     fi
 fi
