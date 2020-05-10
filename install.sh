@@ -81,7 +81,7 @@ else
         # Install Frontend
         npm i -g laravel-echo-server
         cp -r frontend /etc/pwire
-        cp .env /etc/pwire/frontend
+        cp frontend/.env /etc/pwire/frontend
         php /etc/pwire/frontend/artisan key:generate
         php /etc/pwire/frontend/artisan storage:link
         php /etc/pwire/frontend/artisan migrate --force
