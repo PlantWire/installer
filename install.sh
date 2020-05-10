@@ -68,6 +68,7 @@ else
 	echo "deb [trusted=yes] https://apt.fury.io/caddy/ /" | tee -a /etc/apt/sources.list.d/caddy-fury.list
 	sudo apt update
 	sudo apt install caddy
+	usermod -a -G www-data caddy
 	cp Caddyfile /etc/caddy/Caddyfile
 	openssl req -x509 -newkey rsa:4096 -nodes -keyout /etc/caddy/key.pem -out /etc/caddy/cert.pem -days 3650 -subj '/CN=localhost'
 	chown caddy:caddy /etc/caddy/cert.pem 
