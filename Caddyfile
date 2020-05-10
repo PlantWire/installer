@@ -1,8 +1,8 @@
-:80 {
+:443 {
   root * /etc/pwire/frontend/public
   log /var/log/caddy/frontend.log
-  tls internal
- 
+  tls /etc/caddy/cert.pem /etc/caddy/key.pem
+
   # PHP-FPM Configuration for Caddy
   php_fastcgi unix//run/php/php-fpm.sock
   file_server
