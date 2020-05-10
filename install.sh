@@ -69,6 +69,10 @@ else
 	sudo apt update
 	sudo apt install caddy
 	cp Caddyfile /etc/caddy/Caddyfile
+	openssl req -x509 -newkey rsa:4096 -nodes -keyout /etc/caddy/key.pem -out /etc/caddy/cert.pem -days 3650 -subj '/CN=localhost'
+	chown caddy:caddy /etc/caddy/cert.pem 
+	chown caddy:caddy /etc/caddy/key.pem 
+	chmod 600 /etc/caddy/key.
         #usermod -aG www-data caddy
         # Install Postgre
         apt install -y postgresql
