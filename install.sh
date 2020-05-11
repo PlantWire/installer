@@ -73,7 +73,7 @@ else
 	openssl req -x509 -newkey rsa:4096 -nodes -keyout /etc/caddy/key.pem -out /etc/caddy/cert.pem -days 3650 -subj '/CN=localhost'
 	chown caddy:caddy /etc/caddy/cert.pem 
 	chown caddy:caddy /etc/caddy/key.pem 
-	chmod 600 /etc/caddy/key.
+	chmod 600 /etc/caddy/key.pem
         #usermod -aG www-data caddy
         # Install Postgre
 	db_password=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;)
