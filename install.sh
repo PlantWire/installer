@@ -87,7 +87,7 @@ else
         # Install Frontend
         npm i -g laravel-echo-server
         cp -r frontend /etc/pwire
-	sed -i "s/{{db_password}}/$db_password/g" env
+	sed -i "s/{{db_password}}/$db_password/g" frontend/.env
         cp frontend/.env /etc/pwire/frontend
         php /etc/pwire/frontend/artisan key:generate
         php /etc/pwire/frontend/artisan storage:link
