@@ -74,6 +74,7 @@ else
 	chown caddy:caddy /etc/caddy/cert.pem 
 	chown caddy:caddy /etc/caddy/key.pem 
 	chmod 600 /etc/caddy/key.pem
+	systemctl restart caddy
         #usermod -aG www-data caddy
         # Install Postgre
 	db_password=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;)
