@@ -43,6 +43,9 @@ else
         # Installer setup
         apt update
         apt -y install curl
+	
+	git clone https://github.com/PlantWire/installer.git
+	cd installer
         
         # Install Server
         cp redis.conf /etc/redis/redis.conf
