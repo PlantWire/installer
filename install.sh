@@ -76,8 +76,9 @@ else
 	chmod 600 /etc/caddy/key.
         #usermod -aG www-data caddy
         # Install Postgre
+	db_password=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;)
         apt install -y postgresql
-	    sudo -i -u postgres bash -c "psql --command=\"CREATE USER pwire WITH PASSWORD 'pwire' NOCREATEDB;\""
+	    sudo -i -u postgres bash -c "psql --command=\"CREATE USER pwire WITH PASSWORD '$db_password' NOCREATEDB;\""
         sudo -i -u postgres bash -c "psql --command=\"CREATE DATABASE pwire;\""
         sudo -i -u postgres bash -c "psql --command=\"GRANT ALL PRIVILEGES ON DATABASE pwire TO pwire;\""      
         # Install Node.Js
@@ -86,6 +87,7 @@ else
         # Install Frontend
         npm i -g laravel-echo-server
         cp -r frontend /etc/pwire
+	sed -i "s/{{db_password}}/$db_password/g" env
         cp frontend/.env /etc/pwire/frontend
         php /etc/pwire/frontend/artisan key:generate
         php /etc/pwire/frontend/artisan storage:link
