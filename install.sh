@@ -111,7 +111,6 @@ else
         (crontab -u caddy -l 2>/dev/null; echo "* * * * * cd /etc/pwire/frontend && php artisan schedule:run >> /dev/null 2>&1") | crontab -
 	#Enable uart1 overlay
 	sed -i 's/overlays=/overlays=uart1 /g' /boot/armbianEnv.txt
-	init 6
     else
         apt update
         # Uninstall Server
