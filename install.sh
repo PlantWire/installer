@@ -50,7 +50,9 @@ else
         
         db_password=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;)
         redis_password=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;)
+        apt -y install uuid-runtime
         server_uuid=$(uuidgen)
+        apt -y purge uuid-runtime
         # Configure redis
         sed -i "s/{{redis_password}}/$redis_password/g" redis.conf
         cp redis.conf /etc/redis/redis.conf
@@ -88,7 +90,6 @@ else
 	chown caddy:caddy /etc/caddy/key.pem 
 	chmod 600 /etc/caddy/key.pem
 	systemctl restart caddy
-        #usermod -aG www-data caddy
         # Install Postgre
         apt install -y postgresql
 	    sudo -i -u postgres bash -c "psql --command=\"CREATE USER pwire WITH PASSWORD '$db_password' NOCREATEDB;\""
@@ -117,9 +118,15 @@ else
         systemctl enable pwire-eventing
         systemctl daemon-reload
         chown -R www-data:www-data /etc/pwire/frontend
+        chmod 664 /etc/pwire/frontend/storage/logs/laravel.log
         (crontab -u caddy -l 2>/dev/null; echo "* * * * * cd /etc/pwire/frontend && php artisan schedule:run >> /dev/null 2>&1") | crontab -
-	#Enable uart1 overlay
+	# Enable uart1 overlay
 	sed -i 's/overlays=/overlays=uart1 /g' /boot/armbianEnv.txt
+        # Add services to dietpi
+        echo "+ pwire-eventing" >> /boot/dietpi/.dietpi-services_include_exclude
+        echo "+ pwire-frontend" >> /boot/dietpi/.dietpi-services_include_exclude
+        echo "+ pwire-server" >> /boot/dietpi/.dietpi-services_include_exclude
+        dietpi-services dietpi_controlled
     else
         apt update
         # Uninstall Server
