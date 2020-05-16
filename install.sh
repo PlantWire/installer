@@ -48,10 +48,19 @@ else
 	cd installer
         unzip -q components.zip
         
-        # Install Server
+        db_password=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;)
+        redis_password=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;)
+        server_uuid=$(uuidgen)
+        # Configure redis
+        sed -i "s/{{redis_password}}/$redis_password/g" redis.conf
         cp redis.conf /etc/redis/redis.conf
+        systemctl restart redis
+        # Install Server
+        sed -i "s/{{redis_password}}/$redis_password/g" pwire-server.cfg
+        sed -i "s/{{uuid}}/$server_uuid/g" pwire-server.cfg
         mkdir -p /etc/pwire
         cp -r server /etc/pwire
+        cp pwire-server.cfg /etc/pwire/server/pwire-server.cfg
         cp pwire-server.service /etc/systemd/system/pwire-server.service
         systemctl daemon-reload
         systemctl enable pwire-server
@@ -81,7 +90,6 @@ else
 	systemctl restart caddy
         #usermod -aG www-data caddy
         # Install Postgre
-	db_password=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;)
         apt install -y postgresql
 	    sudo -i -u postgres bash -c "psql --command=\"CREATE USER pwire WITH PASSWORD '$db_password' NOCREATEDB;\""
         sudo -i -u postgres bash -c "psql --command=\"CREATE DATABASE pwire;\""
@@ -93,6 +101,7 @@ else
         npm i -g laravel-echo-server
         cp -r frontend /etc/pwire
 	sed -i "s/{{db_password}}/$db_password/g" .env
+        sed -i "s/{{redis_password}}/$redis_password/g" .env
         cp .env /etc/pwire/frontend
         php /etc/pwire/frontend/artisan key:generate
         php /etc/pwire/frontend/artisan storage:link
