@@ -5,13 +5,14 @@
 [Unit]
 Description=pWire
 Documentation=https://gitlab.dev.ifs.hsr.ch/epj/2020/pwire/pwire-frontend
-Requires=redis.service
-After=network.target redis.service
+Requires=redis-server.service
+After=network.target redis-server.service
 
 [Service]
 User=caddy
 Group=caddy
 ExecStart=/usr/bin/php /etc/pwire/frontend/artisan redis:subscribe
+Restart=always
 TimeoutStopSec=5s
 LimitNOFILE=1048576
 LimitNPROC=512
