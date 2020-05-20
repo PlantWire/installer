@@ -13,12 +13,8 @@ User=caddy
 Group=caddy
 ExecStart=/usr/bin/php /etc/pwire/frontend/artisan redis:subscribe
 Restart=on-failure
-TimeoutStopSec=5s
-LimitNOFILE=1048576
-LimitNPROC=512
 PrivateTmp=true
-ProtectSystem=full
-AmbientCapabilities=CAP_NET_BIND_SERVICE
+ProtectSystem=true
 
 [Install]
 WantedBy=multi-user.target
