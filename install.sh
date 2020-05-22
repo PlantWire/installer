@@ -110,7 +110,7 @@ else
         php /etc/pwire/frontend/artisan view:cache
         php /etc/pwire/frontend/artisan route:cache
         php /etc/pwire/frontend/artisan config:cache
-	php /etc/pwire/frontend/artisan db:seed --class=UsersTableSeeder
+	php /etc/pwire/frontend/artisan db:seed --class=SettingsSeeder
         cp pwire-frontend.service /etc/systemd/system/pwire-frontend.service
         cp pwire-eventing.service /etc/systemd/system/pwire-eventing.service
         systemctl daemon-reload
