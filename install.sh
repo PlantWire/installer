@@ -56,7 +56,7 @@ else
         # Configure redis
         sed -i "s/{{redis_password}}/$redis_password/g" redis.conf
         cp redis.conf /etc/redis/redis.conf
-	mkdir /var/log/redis
+	mkdir -p /var/log/redis
         systemctl restart redis
         # Install Server
         sed -i "s/{{redis_password}}/$redis_password/g" pwire-server.cfg
