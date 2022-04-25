@@ -42,7 +42,7 @@ else
     then
         # Installer setup
         apt update
-        apt -y install curl unzip
+        apt -y install curl unzip git
 	
 	git clone https://github.com/PlantWire/installer.git
 	cd installer
