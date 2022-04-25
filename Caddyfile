@@ -1,6 +1,6 @@
 :443 {
   root * /etc/pwire/frontend/public
-  log /var/log/caddy/frontend.log
+  #log /var/log/caddy/frontend.log
   tls /etc/caddy/cert.pem /etc/caddy/key.pem
 
   # PHP-FPM Configuration for Caddy
