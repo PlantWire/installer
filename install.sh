@@ -56,6 +56,7 @@ else
         # Configure redis
         sed -i "s/{{redis_password}}/$redis_password/g" redis.conf
         cp redis.conf /etc/redis/redis.conf
+	mkdir /var/log/redis
         systemctl restart redis
         # Install Server
         sed -i "s/{{redis_password}}/$redis_password/g" pwire-server.cfg
@@ -90,7 +91,7 @@ else
 	chown caddy:caddy /etc/caddy/key.pem 
 	chmod 600 /etc/caddy/key.pem
 	systemctl restart caddy
-        # Install Postgre
+        # Install Postgres
         apt install -y postgresql
 	    sudo -i -u postgres bash -c "psql --command=\"CREATE USER pwire WITH PASSWORD '$db_password' NOCREATEDB;\""
         sudo -i -u postgres bash -c "psql --command=\"CREATE DATABASE pwire;\""
